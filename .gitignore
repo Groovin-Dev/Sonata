@@ -1,0 +1,16 @@
+.DS_Store
+/.build
+/.swiftpm
+/DerivedData
+xcuserdata/
+*.xcuserstate
+.idea/
+.vscode/
+Pods/
+build/
+Package.resolved
+After-the-rain.folder/
+Docs/java-src/
+debug_raw_out/
+log.csv
+__pycache__/
