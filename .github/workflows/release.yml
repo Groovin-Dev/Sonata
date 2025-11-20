@@ -1,0 +1,70 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    name: Build and Release
+    runs-on: macos-26
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Show Xcode version
+        run: xcodebuild -version
+
+      - name: Build Release
+        run: |
+          xcodebuild build \
+            -project Sonata.xcodeproj \
+            -scheme Sonata \
+            -configuration Release \
+            -derivedDataPath build/DerivedData \
+            CODE_SIGN_IDENTITY="-" \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGNING_ALLOWED=NO
+
+      - name: Create DMG
+        run: |
+          chmod +x Scripts/create-dmg.sh
+          ./Scripts/create-dmg.sh
+
+      - name: Get version from tag
+        id: version
+        run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: Sonata ${{ steps.version.outputs.VERSION }}
+          body: |
+            ## Installation
+
+            1. Download `Sonata.dmg`
+            2. Open the DMG and drag Sonata to Applications
+            3. **Important:** Since this app is unsigned, macOS will block it by default
+
+            ### To open an unsigned app:
+
+            **Option 1 - Right-click method:**
+            - Right-click (or Control-click) on Sonata in Applications
+            - Select "Open" from the context menu
+            - Click "Open" in the dialog
+
+            **Option 2 - Terminal method:**
+            ```bash
+            xattr -cr /Applications/Sonata.app
+            ```
+
+            ## Requirements
+
+            - macOS 15.0 or later
+            - Environment variables: `HYPEM_API_KEY`, `HYPEM_USERNAME`, `HYPEM_PASSWORD`
+          files: build/Sonata.dmg
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -15,10 +15,44 @@ A macOS music player for HypeM built with SwiftUI and Liquid Glass styling.
 ## Requirements
 
 - macOS 15.0+
-- Xcode 16+
 - HypeM account
 
+## Installation
+
+### Download Release
+
+1. Download the latest `Sonata.dmg` from [Releases](https://github.com/Groovin-Dev/Sonata/releases)
+2. Open the DMG and drag Sonata to Applications
+3. Set environment variables (see Setup below)
+
+### Opening Unsigned Apps
+
+Sonata is not signed with an Apple Developer certificate. macOS will block it by default.
+
+**Option 1 - Right-click method:**
+- Right-click (or Control-click) on Sonata in Applications
+- Select "Open" from the context menu
+- Click "Open" in the dialog that appears
+
+**Option 2 - Terminal method:**
+```bash
+xattr -cr /Applications/Sonata.app
+```
+
 ## Setup
+
+### Environment Variables
+
+Set these before running Sonata:
+```bash
+export HYPEM_API_KEY="your_api_key"
+export HYPEM_USERNAME="your_username"
+export HYPEM_PASSWORD="your_password"
+```
+
+### Build from Source
+
+Requires Xcode 16+.
 
 1. Clone the repository:
    ```bash
@@ -26,19 +60,12 @@ A macOS music player for HypeM built with SwiftUI and Liquid Glass styling.
    cd Sonata
    ```
 
-2. Set environment variables for the HypeM API:
-   ```bash
-   export HYPEM_API_KEY="your_api_key"
-   export HYPEM_USERNAME="your_username"
-   export HYPEM_PASSWORD="your_password"
-   ```
-
-3. Open in Xcode:
+2. Open in Xcode:
    ```bash
    open Sonata.xcodeproj
    ```
 
-4. Build and run (Cmd+R)
+3. Build and run (Cmd+R)
 
 ## Usage
 
